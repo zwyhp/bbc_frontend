@@ -43,6 +43,7 @@
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
       <el-button type="primary" style="width:100%;margin-bottom:30px;" @click="dialogFormVisible = true" plain>注册</el-button>
       <el-button type="primary" style="width:100%;margin-bottom:30px;" @click="visit">游客访问</el-button>
+      <el-button type="primary" style="width:100%;margin-bottom:30px;" @click="dialogVisible = true">忘记密码</el-button>
     </el-form>
 
     <el-dialog title="会员注册" :visible.sync="dialogFormVisible">
@@ -54,15 +55,28 @@
         <el-input v-model="user.answer" placeholder="请输入安全问题答案" show-password></el-input>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button @click="cancel">取 消</el-button>
         <el-button type="primary" @click="register">注册</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog title="会员密码修改" :visible.sync="dialogVisible">
+      <el-form ref="form" :model="user" label-width="50px">
+        <el-input v-model="user.userName" placeholder="请输入用户名"></el-input>
+        <el-input v-model="user.question" placeholder="安全问题" :disabled="true"></el-input>
+        <el-input v-model="user.answer" placeholder="请输入安全问题答案" show-password></el-input>
+        <el-input v-model="user.userPwd" placeholder="请输入修改的密码" show-password></el-input>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="getQuestion">查看安全问题</el-button>
+        <el-button type="primary" @click="updateUser">修改</el-button>
+        <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { register } from '@/api/user'
+import { register, question, updateUser } from '@/api/user'
 import { validUsername } from '@/utils/validate'
 import { MessageBox } from 'element-ui'
 
@@ -96,7 +110,9 @@ export default {
       passwordType: 'password',
       redirect: undefined,
       dialogFormVisible: false,
+      dialogVisible: false,
       user: {
+        userID: 0,
         userName: '',
         userPwd: '',
         userEmail: '',
@@ -153,13 +169,50 @@ export default {
           confirmButtonText: '确定',
           type: 'info'
         })
-        this.dialogFormVisible = false
+        this.cancel()
       }).catch(response => {
-        this.dialogFormVisible = false
+        MessageBox.alert('注冊失败', '警告', {
+          confirmButtonText: '确定',
+          type: 'error'
+        })
+        this.cancel()
       })
     },
     visit() {
-      this.$router.push({ name: 'tourist' })
+      this.$store.dispatch('Tourist').then(() => {
+        this.$router.push({ name: 'tourist' })
+      })
+    },
+    getQuestion() {
+      question({ userName: this.user.userName }).then(res => {
+        this.user.question = res.data
+      }).catch(response => {
+      })
+    },
+    updateUser() {
+      updateUser(this.user).then(() => {
+        MessageBox.alert('修改成功', '提示', {
+          confirmButtonText: '确定',
+          type: 'info'
+        })
+        this.cancel()
+      }).catch(response => {
+        MessageBox.alert('修改失败', '警告', {
+          confirmButtonText: '确定',
+          type: 'error'
+        })
+        this.cancel()
+      })
+    },
+    cancel() {
+      this.user.userID = 0
+      this.user.userName = ''
+      this.user.userPwd = ''
+      this.user.userEmail = ''
+      this.user.question = ''
+      this.user.answer = ''
+      this.dialogVisible = false
+      this.dialogFormVisible = false
     }
   }
 }

@@ -73,6 +73,14 @@ const user = {
         removeToken()
         resolve()
       })
+    },
+
+    Tourist({ commit }) {
+      return new Promise(resolve => {
+        commit('SET_ROLE', -2)
+        removeToken()
+        resolve()
+      })
     }
   }
 }

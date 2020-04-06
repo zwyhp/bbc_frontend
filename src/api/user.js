@@ -45,3 +45,19 @@ export function updateBlack(id) {
     method: 'put'
   })
 }
+
+export function question(queryInfo) {
+  return request({
+    url: '/question',
+    method: 'get',
+    params: queryInfo
+  })
+}
+
+export function updateUser(data) {
+  return request({
+    url: '/update',
+    method: 'put',
+    data
+  })
+}

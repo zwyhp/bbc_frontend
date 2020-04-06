@@ -284,7 +284,7 @@ export default {
     },
     getusername() {
       this.username = this.$store.getters.name
-      if (this.$store.getters.role !== -1) {
+      if (this.$store.getters.role !== -1 && this.$store.getters.role !== -2) {
         this.show = true
       }
     },
