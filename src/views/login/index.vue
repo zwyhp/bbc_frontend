@@ -112,7 +112,7 @@ export default {
       dialogFormVisible: false,
       dialogVisible: false,
       user: {
-        userID: 0,
+        userId: 0,
         userName: '',
         userPwd: '',
         userEmail: '',
@@ -205,7 +205,7 @@ export default {
       })
     },
     cancel() {
-      this.user.userID = 0
+      this.user.userId = 0
       this.user.userName = ''
       this.user.userPwd = ''
       this.user.userEmail = ''

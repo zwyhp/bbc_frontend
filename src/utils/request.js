@@ -5,7 +5,7 @@ import { getToken } from '@/utils/auth'
 
 // create an axios instance
 const service = axios.create({
-  baseURL: 'http://127.0.0.1:8080/BBC_SSM', // url = base url + request url
+  baseURL: 'http://127.0.0.1:8080/', // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 5000 // request timeout
 })
@@ -71,6 +71,12 @@ service.interceptors.response.use(
         return Promise.reject('error')
       } else if (res.errno === 300) {
         MessageBox.alert('请求业务失败，清重新尝试', '警告', {
+          confirmButtonText: '确定',
+          type: 'error'
+        })
+        return Promise.reject('error')
+      } else if (res.errno === 401) {
+        MessageBox.alert(res.errmsg, '警告', {
           confirmButtonText: '确定',
           type: 'error'
         })

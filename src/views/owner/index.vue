@@ -48,7 +48,7 @@
           fixed="right"
           label="操作"
           align="right"
-          width="400"
+          width="600"
         >
           <template slot-scope="scope">
             <el-button
@@ -98,7 +98,6 @@
         title="帖子详细"
         :visible.sync="dialogVisible"
         width="80%"
-        :before-close="handleClose"
       >
         <el-container>
           <el-header><h1 align="center">标题： {{ message.messageTitle }}</h1></el-header>

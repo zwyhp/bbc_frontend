@@ -37,7 +37,7 @@
           <el-button
             size="mini"
             type="danger"
-            @click="updateBlack(scope.row.userID)" >
+            @click="updateBlack(scope.row.userId)" >
             <p v-if="scope.row.inBlack === 1" >移除黑名单</p>
             <p v-if="scope.row.inBlack === 0">加入黑名单</p>
           </el-button>
